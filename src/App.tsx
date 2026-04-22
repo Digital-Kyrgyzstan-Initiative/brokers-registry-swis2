@@ -69,7 +69,7 @@ export default function App() {
 
   return (
     <div className="app-layout">
-      <Header total={total} />
+      {/* <Header total={total} /> */}
 
       <main className="app-main">
         <div className="content-wrapper">
@@ -97,13 +97,13 @@ export default function App() {
         </div>
       </main>
 
-      <footer className="app-footer">
+      {/* <footer className="app-footer">
         <span>© 2025 ГП «Кыргызское Единое Окно»</span>
         <span>·</span>
         <a href="https://trade.kg" target="_blank" rel="noopener noreferrer">
           trade.kg
         </a>
-      </footer>
+      </footer> */}
     </div>
   )
 }
