@@ -4,6 +4,7 @@ import type { Broker, BrokerListResponse, SortByField, SortOrderField } from '..
 
 export interface FetchBrokersParams {
   page: number
+  pageSize: number
   nameSearch: string
   innSearch: string
   sortBy: SortByField
@@ -13,6 +14,7 @@ export interface FetchBrokersParams {
 function buildUrl(params: FetchBrokersParams): string {
   const sp = new URLSearchParams()
   sp.set('page', String(params.page))
+  sp.set('per_page', String(params.pageSize))
   sp.set('sortBy', params.sortBy)
   sp.set('sortOrder', params.sortOrder)
 

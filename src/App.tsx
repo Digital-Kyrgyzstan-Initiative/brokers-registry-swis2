@@ -11,6 +11,7 @@ export default function App() {
   const [loading, setLoading] = useState(false)
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(20)
   const [nameSearch, setNameSearch] = useState('')
   const [innSearch, setInnSearch] = useState('')
   const [sortBy, setSortBy] = useState<SortByField>('createdAt')
@@ -19,7 +20,7 @@ export default function App() {
   const loadData = useCallback(async () => {
     setLoading(true)
     try {
-      const result = await fetchBrokers({ page, nameSearch, innSearch, sortBy, sortOrder })
+      const result = await fetchBrokers({ page, pageSize, nameSearch, innSearch, sortBy, sortOrder })
       setData(result.data)
       setTotal(result.total)
     } catch (err) {
@@ -28,7 +29,7 @@ export default function App() {
     } finally {
       setLoading(false)
     }
-  }, [page, nameSearch, innSearch, sortBy, sortOrder])
+  }, [page, pageSize, nameSearch, innSearch, sortBy, sortOrder])
 
   useEffect(() => {
     void loadData()
@@ -48,6 +49,14 @@ export default function App() {
     setSortBy(by)
     setSortOrder(order)
     setPage(1)
+  }
+
+  const handlePageChange = (newPage: number, newPageSize: number) => {
+    setPage(newPage)
+    if (newPageSize !== pageSize) {
+      setPageSize(newPageSize)
+      setPage(1)
+    }
   }
 
   const handleReset = () => {
@@ -81,7 +90,8 @@ export default function App() {
               loading={loading}
               total={total}
               page={page}
-              onPageChange={setPage}
+              pageSize={pageSize}
+              onPageChange={handlePageChange}
             />
           </div>
         </div>

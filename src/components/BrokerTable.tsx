@@ -7,7 +7,8 @@ interface BrokerTableProps {
   loading: boolean
   total: number
   page: number
-  onPageChange: (page: number) => void
+  pageSize: number
+  onPageChange: (page: number, pageSize: number) => void
 }
 
 function parseCompanyName(name: string): { short: string; abbr: string } {
@@ -54,6 +55,7 @@ export default function BrokerTable({
   loading,
   total,
   page,
+  pageSize,
   onPageChange,
 }: BrokerTableProps) {
   const columns: ColumnsType<Broker> = [
@@ -63,7 +65,7 @@ export default function BrokerTable({
       width: 56,
       align: 'center',
       render: (_: unknown, __: Broker, index: number) => (
-        <span style={{ color: '#9ca3af', fontSize: 13 }}>{(page - 1) * 15 + index + 1}</span>
+        <span style={{ color: '#9ca3af', fontSize: 13 }}>{(page - 1) * pageSize + index + 1}</span>
       ),
     },
     {
@@ -155,14 +157,15 @@ export default function BrokerTable({
       }}
       pagination={{
         current: page,
-        pageSize: 15,
+        pageSize,
         total,
-        showSizeChanger: false,
+        showSizeChanger: true,
+        pageSizeOptions: [10, 20, 50, 100],
         position: ['bottomRight'],
         showTotal: (t) => `Итого: ${t} брокеров`,
       }}
       onChange={(pag) => {
-        if (pag.current) onPageChange(pag.current)
+        onPageChange(pag.current ?? 1, pag.pageSize ?? pageSize)
       }}
     />
   )
