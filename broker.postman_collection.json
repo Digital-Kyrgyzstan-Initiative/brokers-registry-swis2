@@ -1,0 +1,155 @@
+{
+  "info": {
+    "name": "Broker API v2",
+    "_postman_id": "b1c2d3e4-fake-id",
+    "description": "Broker API with filters, sorting and list endpoint",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://swis2.trade.kg/api/v2"
+    }
+  ],
+  "item": [
+    {
+      "name": "Get Brokers List",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/broker/list",
+          "host": ["{{base_url}}"],
+          "path": ["broker", "list"]
+        }
+      }
+    },
+    {
+      "name": "Filter - exact match",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/broker/list?filter[inn][exact]=02910202110090",
+          "host": ["{{base_url}}"],
+          "path": ["broker", "list"],
+          "query": [
+            {
+              "key": "filter[inn][exact]",
+              "value": "02910202110090"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Filter - contains (ILIKE)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/broker/list?filter[legalEntityName][contains-ilike]=центр",
+          "host": ["{{base_url}}"],
+          "path": ["broker", "list"],
+          "query": [
+            {
+              "key": "filter[legalEntityName][contains-ilike]",
+              "value": "центр"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Filter - starts LIKE",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/broker/list?filter[email][starts-like]=test",
+          "host": ["{{base_url}}"],
+          "path": ["broker", "list"],
+          "query": [
+            {
+              "key": "filter[email][starts-like]",
+              "value": "test"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Sort by createdAt DESC",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/broker/list?sortBy=createdAt&sortOrder=desc",
+          "host": ["{{base_url}}"],
+          "path": ["broker", "list"],
+          "query": [
+            {
+              "key": "sortBy",
+              "value": "createdAt"
+            },
+            {
+              "key": "sortOrder",
+              "value": "desc"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Sort by inn ASC",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/broker/list?sortBy=inn&sortOrder=asc",
+          "host": ["{{base_url}}"],
+          "path": ["broker", "list"],
+          "query": [
+            {
+              "key": "sortBy",
+              "value": "inn"
+            },
+            {
+              "key": "sortOrder",
+              "value": "asc"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Combined filter + sort",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/broker/list?filter[legalEntityName][contains-ilike]=центр&filter[email][ends-like]=@bk.ru&sortBy=createdAt&sortOrder=desc",
+          "host": ["{{base_url}}"],
+          "path": ["broker", "list"],
+          "query": [
+            {
+              "key": "filter[legalEntityName][contains-ilike]",
+              "value": "центр"
+            },
+            {
+              "key": "filter[email][ends-like]",
+              "value": "@bk.ru"
+            },
+            {
+              "key": "sortBy",
+              "value": "createdAt"
+            },
+            {
+              "key": "sortOrder",
+              "value": "desc"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
