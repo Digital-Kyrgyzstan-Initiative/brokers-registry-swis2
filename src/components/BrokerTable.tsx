@@ -1,4 +1,6 @@
-import { Empty, Table, Tag, Tooltip } from 'antd'
+import { useEffect, useState } from 'react'
+import { Button, Empty, Pagination, Skeleton, Table, Tag, Tooltip } from 'antd'
+import { MailOutlined, PhoneOutlined } from '@ant-design/icons'
 import type { ColumnsType } from 'antd/es/table'
 import type { Broker } from '../types/broker'
 
@@ -50,6 +52,54 @@ function CertExpiryTag({ date }: { date: string }) {
   return <Tag color="success">{label}</Tag>
 }
 
+function BrokerCard({ broker, index }: { broker: Broker; index: number }) {
+  const { short, abbr } = parseCompanyName(broker.legalEntityName)
+  return (
+    <div className="broker-card">
+      <div className="broker-card-header">
+        <div>
+          <div className="broker-card-name">{short}</div>
+          {abbr && <div className="broker-card-abbr">{abbr}</div>}
+        </div>
+        <span className="broker-card-index">{index}</span>
+      </div>
+
+      <div className="broker-card-meta">
+        <span className="broker-card-inn">ИНН: {broker.inn}</span>
+        <CertExpiryTag date={broker.certificateExpiryDate} />
+      </div>
+
+      <div className="broker-card-actions">
+        <Button
+          type="primary"
+          icon={<PhoneOutlined />}
+          href={`tel:+${broker.phone}`}
+          block
+        >
+          {formatPhone(broker.phone)}
+        </Button>
+        <Button
+          icon={<MailOutlined />}
+          href={`mailto:${broker.email}`}
+          block
+        >
+          Написать
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', handler)
+    return () => window.removeEventListener('resize', handler)
+  }, [])
+  return isMobile
+}
+
 export default function BrokerTable({
   data,
   loading,
@@ -58,6 +108,8 @@ export default function BrokerTable({
   pageSize,
   onPageChange,
 }: BrokerTableProps) {
+  const isMobile = useIsMobile()
+
   const columns: ColumnsType<Broker> = [
     {
       title: '№',
@@ -135,6 +187,44 @@ export default function BrokerTable({
       render: (date: string) => <CertExpiryTag date={date} />,
     },
   ]
+
+  if (isMobile) {
+    return (
+      <div>
+        {loading ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Skeleton key={i} active paragraph={{ rows: 3 }} />
+            ))}
+          </div>
+        ) : data.length === 0 ? (
+          <Empty description="Брокеры не найдены" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        ) : (
+          <div className="broker-cards">
+            {data.map((broker, index) => (
+              <BrokerCard
+                key={broker.id}
+                broker={broker}
+                index={(page - 1) * pageSize + index + 1}
+              />
+            ))}
+          </div>
+        )}
+        <div className="broker-cards-pagination">
+          <Pagination
+            current={page}
+            pageSize={pageSize}
+            total={total}
+            showSizeChanger
+            pageSizeOptions={[10, 20, 50]}
+            onChange={onPageChange}
+            showTotal={(t) => `${t} брокеров`}
+            size="small"
+          />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <Table
