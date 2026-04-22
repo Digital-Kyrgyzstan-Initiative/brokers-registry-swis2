@@ -59,6 +59,7 @@ export default function SearchBar({
       <div className="search-field search-field-name">
         <label>Поиск по организации</label>
         <Input
+          size="large"
           placeholder="Введите название компании..."
           prefix={<SearchOutlined style={{ color: '#9ca3af' }} />}
           value={localName}
@@ -70,6 +71,7 @@ export default function SearchBar({
       <div className="search-field search-field-inn">
         <label>ИНН</label>
         <Input
+          size="large"
           placeholder="Введите ИНН..."
           value={innSearch}
           onChange={e => onInnChange(e.target.value)}
@@ -81,6 +83,7 @@ export default function SearchBar({
       <div className="search-field search-field-sort">
         <label>Сортировка</label>
         <Select
+          size="large"
           value={`${sortBy}|${sortOrder}`}
           options={SORT_OPTIONS}
           onChange={handleSortChange}
