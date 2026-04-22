@@ -60,7 +60,7 @@ export default function App() {
 
   return (
     <div className="app-layout">
-      <Header />
+      <Header total={total} />
 
       <main className="app-main">
         <div className="content-wrapper">

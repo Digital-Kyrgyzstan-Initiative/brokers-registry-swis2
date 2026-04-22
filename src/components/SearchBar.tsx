@@ -57,9 +57,9 @@ export default function SearchBar({
   return (
     <div className="search-bar">
       <div className="search-field search-field-name">
-        <label>Наименование организации</label>
+        <label>Поиск по организации</label>
         <Input
-          placeholder="Поиск по названию..."
+          placeholder="Введите название компании..."
           prefix={<SearchOutlined style={{ color: '#9ca3af' }} />}
           value={localName}
           onChange={e => setLocalName(e.target.value)}
@@ -70,7 +70,7 @@ export default function SearchBar({
       <div className="search-field search-field-inn">
         <label>ИНН</label>
         <Input
-          placeholder="Точное значение ИНН"
+          placeholder="Введите ИНН..."
           value={innSearch}
           onChange={e => onInnChange(e.target.value)}
           allowClear
