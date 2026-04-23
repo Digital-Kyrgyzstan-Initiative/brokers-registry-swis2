@@ -25,7 +25,7 @@ function buildUrl(params: FetchBrokersParams): string {
     sp.set('filter[inn][exact]', params.innSearch.trim())
   }
 
-  return `/api/broker/list?${sp.toString()}`
+  return `https://swis2.trade.kg/api/v2/broker/list?${sp.toString()}`
 }
 
 function dedup(brokers: Broker[]): Broker[] {
@@ -40,7 +40,12 @@ function parseTotal(total: number | [number, number]): number {
 export async function fetchBrokers(
   params: FetchBrokersParams
 ): Promise<{ data: Broker[]; total: number }> {
-  const response = await fetch(buildUrl(params))
+  const response = await fetch(buildUrl(params), {
+    headers: {
+      Authorization: 'Basic WjB1dGhPc3Y5NnFIZXNWQzB6SldnUjdtamxnREVQOkpxeVBhalNhSW02UlpUUlAybFNEM0dQNmlFV21JUQ==',
+      Accept: 'application/json',
+    },
+  })
 
   if (!response.ok) {
     throw new Error(`API error: ${response.status} ${response.statusText}`)
